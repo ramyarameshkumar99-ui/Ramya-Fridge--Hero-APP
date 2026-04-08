@@ -20,8 +20,36 @@
   <input type="text" id="ingredient3" name="ingredient3" />
   <br /><br />
 
-  <button type="button">Cook Magic</button>
+  <button type="button" id="cookMagicBtn">Cook Magic</button>
 
   <div id="result"></div>
+
+  <script>
+    const ingredient1Input = document.getElementById("ingredient1");
+    const ingredient2Input = document.getElementById("ingredient2");
+    const ingredient3Input = document.getElementById("ingredient3");
+    const cookMagicBtn = document.getElementById("cookMagicBtn");
+    const resultDiv = document.getElementById("result");
+
+    function getRecipeSuggestion(ingredients) {
+      const joinedIngredients = ingredients.join(", ");
+      return `Magic Recipe Idea: Make a quick stir-fry with ${joinedIngredients}. Add salt, pepper, and a little oil, then cook for 8-10 minutes.`;
+    }
+
+    cookMagicBtn.addEventListener("click", function () {
+      const ingredients = [
+        ingredient1Input.value.trim(),
+        ingredient2Input.value.trim(),
+        ingredient3Input.value.trim(),
+      ].filter(Boolean);
+
+      if (ingredients.length === 0) {
+        resultDiv.textContent = "Please enter at least one ingredient.";
+        return;
+      }
+
+      resultDiv.textContent = getRecipeSuggestion(ingredients);
+    });
+  </script>
 </body>
 </html>
