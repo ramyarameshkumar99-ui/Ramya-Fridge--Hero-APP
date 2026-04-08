@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fridge Hero</title>
+</head>
+<body>
+  <h1>Fridge Hero</h1>
+
+  <label for="ingredient1">Ingredient 1</label>
+  <input type="text" id="ingredient1" name="ingredient1" />
+  <br /><br />
+
+  <label for="ingredient2">Ingredient 2</label>
+  <input type="text" id="ingredient2" name="ingredient2" />
+  <br /><br />
+
+  <label for="ingredient3">Ingredient 3</label>
+  <input type="text" id="ingredient3" name="ingredient3" />
+  <br /><br />
+
+  <button type="button">Cook Magic</button>
+
+  <div id="result"></div>
+</body>
+</html>
