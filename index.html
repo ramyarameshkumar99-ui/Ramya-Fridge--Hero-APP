@@ -4,21 +4,187 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fridge Hero</title>
+  <style>
+    :root {
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #f4f7fb;
+      color: #1b1f24;
+    }
+
+    .app {
+      width: min(92vw, 420px);
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+      padding: 24px;
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 14px;
+      padding: 10px 12px;
+      border: 1px solid #cfd7e3;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 14px;
+      background: #2b72ff;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1f5dd6;
+    }
+
+    .secondary-btn {
+      margin-top: 10px;
+      background: #e7eefc;
+      color: #1f3f7a;
+    }
+
+    .secondary-btn:hover {
+      background: #d9e6ff;
+    }
+
+    .secondary-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.65;
+    }
+
+    .clear-btn {
+      margin-top: 10px;
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .clear-btn:hover {
+      background: #e5e7eb;
+    }
+
+    #result-container {
+      margin-top: 16px;
+      min-height: 56px;
+      padding: 12px;
+      border: 1px dashed #9cb5e7;
+      border-radius: 10px;
+      background: #f8fbff;
+      line-height: 1.4;
+    }
+  </style>
 </head>
 <body>
-  <h1>Fridge Hero</h1>
+  <main class="app">
+    <h1>Fridge Hero</h1>
 
-  <label for="ingredient1">Ingredient 1</label>
-  <input id="ingredient1" type="text">
+    <label for="ingredient1">Ingredient 1</label>
+    <input id="ingredient1" type="text">
 
-  <label for="ingredient2">Ingredient 2</label>
-  <input id="ingredient2" type="text">
+    <label for="ingredient2">Ingredient 2</label>
+    <input id="ingredient2" type="text">
 
-  <label for="ingredient3">Ingredient 3</label>
-  <input id="ingredient3" type="text">
+    <label for="ingredient3">Ingredient 3</label>
+    <input id="ingredient3" type="text">
 
-  <button type="button">Cook Magic</button>
+    <button type="button">Cook Magic</button>
+    <button type="button" class="secondary-btn" id="reroll-btn" disabled>Surprise Me Again</button>
+    <button type="button" class="clear-btn" id="clear-btn">Clear</button>
 
-  <div id="result-container"></div>
+    <div id="result-container"></div>
+  </main>
+
+  <script>
+    const ingredient1Input = document.getElementById("ingredient1");
+    const ingredient2Input = document.getElementById("ingredient2");
+    const ingredient3Input = document.getElementById("ingredient3");
+    const cookButton = document.querySelector("button");
+    const rerollButton = document.getElementById("reroll-btn");
+    const clearButton = document.getElementById("clear-btn");
+    const resultContainer = document.getElementById("result-container");
+    let latestIngredients = [];
+
+    const ideas = [
+      "Stir-fry {items} with garlic, chili flakes, and a splash of soy sauce.",
+      "Make a quick bowl: saute {items}, then serve over rice or noodles.",
+      "Turn {items} into a cozy soup with broth, pepper, and herbs.",
+      "Roast {items} with olive oil, salt, and paprika for a simple tray meal.",
+      "Cook {items} into a masala-style curry with onion, tomato, and spices."
+    ];
+
+    const showRecipeIdea = (ingredients) => {
+      const randomIdea = ideas[Math.floor(Math.random() * ideas.length)];
+      resultContainer.textContent = randomIdea.replace("{items}", ingredients.join(", "));
+    };
+
+    cookButton.addEventListener("click", () => {
+      const ingredients = [
+        ingredient1Input.value.trim(),
+        ingredient2Input.value.trim(),
+        ingredient3Input.value.trim()
+      ].filter(Boolean);
+
+      if (ingredients.length === 0) {
+        resultContainer.textContent = "Add at least one ingredient to cook magic.";
+        rerollButton.disabled = true;
+        return;
+      }
+
+      latestIngredients = ingredients;
+      rerollButton.disabled = false;
+      showRecipeIdea(ingredients);
+    });
+
+    [ingredient1Input, ingredient2Input, ingredient3Input].forEach((input) => {
+      input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          cookButton.click();
+        }
+      });
+    });
+
+    rerollButton.addEventListener("click", () => {
+      if (latestIngredients.length === 0) {
+        return;
+      }
+      showRecipeIdea(latestIngredients);
+    });
+
+    clearButton.addEventListener("click", () => {
+      ingredient1Input.value = "";
+      ingredient2Input.value = "";
+      ingredient3Input.value = "";
+      latestIngredients = [];
+      rerollButton.disabled = true;
+      resultContainer.textContent = "";
+      ingredient1Input.focus();
+    });
+  </script>
 </body>
 </html>
