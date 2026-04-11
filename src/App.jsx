@@ -44,7 +44,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  const apiKey = String(import.meta.env.VITE_GEMINI_API_KEY ?? "").trim();
 
   async function handleCookMagic(e) {
     e.preventDefault();
@@ -53,7 +53,7 @@ export default function App() {
 
     if (!apiKey) {
       setError(
-        "Add your Gemini API key to a .env file as VITE_GEMINI_API_KEY=your_key (get one at Google AI Studio)."
+        "Add VITE_GEMINI_API_KEY=your_key to a file named .env in the project root (same folder as package.json), save, then stop the dev server (Ctrl+C) and run npm run dev again. Get a key at Google AI Studio."
       );
       return;
     }
